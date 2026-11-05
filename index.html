@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpeedCam Pro — Радар-детектор и Дорожная навигация</title>
+    <script>
+        (function() {
+            var search = window.location.search.toLowerCase();
+            if (search.includes('success') || search.includes('error') || search.includes('fail') || search.includes('id=')) {
+                var urlParams = new URLSearchParams(window.location.search);
+                var orderId = urlParams.get('id') || urlParams.get('order_id') || '';
+                var isError = search.includes('error') || search.includes('fail') || search.includes('status=failed');
+                var status = isError ? 'fail' : 'success';
+                var targetUrl = "speedcam://payment/return?gateway=selfemployed_rf&status=" + status + "&orderId=" + encodeURIComponent(orderId);
+                window.location.href = targetUrl;
+            }
+        })();
+    </script>
     <style>
         :root {
             --bg-primary: #0a0e17;

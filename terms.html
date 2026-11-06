@@ -3,36 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пользовательское соглашение — SpeedCam Pro</title>
+    <title>Пользовательское соглашение (Публичная оферта) — SpeedCam Pro</title>
+    <meta name="description" content="Публичная оферта и лицензионный договор мобильного приложения SpeedCam Pro. Условия использования, тарифы, порядок возврата (ст. 26.1 ЗОЗПП) и реквизиты самозанятого.">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0a0e17; color: #e2e8f0; line-height: 1.6; padding: 40px 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: #131b2e; padding: 36px; border-radius: 20px; border: 1px solid #1e293b; }
-        h1 { font-size: 26px; margin-bottom: 8px; color: #fff; }
-        .date { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
-        h2 { font-size: 18px; margin: 24px 0 12px; color: #93c5fd; }
-        p, li { font-size: 14px; color: #cbd5e1; margin-bottom: 12px; }
-        ul { padding-left: 20px; }
-        a { color: #60a5fa; text-decoration: none; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #94a3b8; font-size: 14px; }
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-card: #131b2e;
+            --bg-card-alt: #1a243b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.65;
+            padding: 30px 16px 60px;
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+        }
+        header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            transition: color 0.2s;
+        }
+        .back-nav:hover { color: #60a5fa; }
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .meta-badge {
+            display: inline-block;
+            background: rgba(175, 82, 222, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(175, 82, 222, 0.3);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .doc-date {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background: #af52de;
+            border-radius: 2px;
+        }
+        p, li {
+            font-size: 15px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+        ul, ol {
+            padding-left: 22px;
+            margin-bottom: 16px;
+        }
+        li { margin-bottom: 8px; }
+        strong { color: #fff; }
+        .highlight-box {
+            background: rgba(37, 99, 235, 0.08);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .highlight-box.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-left-color: var(--warning);
+        }
+        .highlight-box.success {
+            background: rgba(16, 185, 129, 0.08);
+            border-left-color: var(--success);
+        }
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            font-size: 14px;
+        }
+        .pricing-table th, .pricing-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .pricing-table th {
+            background: var(--bg-card-alt);
+            color: #fff;
+            font-weight: 600;
+        }
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+            padding: 16px;
+            background: var(--bg-card-alt);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .quick-nav a {
+            color: #c084fc;
+            text-decoration: none;
+            font-size: 13px;
+            padding: 4px 10px;
+            background: rgba(175, 82, 222, 0.1);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .quick-nav a:hover {
+            background: #af52de;
+            color: #fff;
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        a { color: #60a5fa; }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="back-link">← На главную SpeedCam Pro</a>
-        <h1>Пользовательское соглашение (Оферта)</h1>
-        <div class="date">Дата редакции: 31 октября 2026 г. | Правообладатель: Михаил Коробов</div>
+        <header>
+            <a href="index.html" class="back-nav">← Вернуться на главную страницу SpeedCam Pro</a>
+            <div class="meta-badge">Публичная оферта (Лицензионный договор)</div>
+            <h1>Пользовательское соглашение и Оферта</h1>
+            <div class="doc-date">Дата редакции: 6 ноября 2026 г. | Версия: 4.0-production (Юридический аудит по законодательству РФ и нормам сторов)</div>
+        </header>
 
-        <h2>1. Общие положения</h2>
-        <p>Настоящее Соглашение определяет условия использования мобильного приложения SpeedCam Pro («Приложение»). Установка и использование Приложения подтверждает согласие с условиями соглашения.</p>
+        <div class="quick-nav">
+            <a href="#section-1">1. Стороны и понятия</a>
+            <a href="#section-2">2. Предмет лицензии</a>
+            <a href="#section-3">3. Тарифы и оплата (422-ФЗ)</a>
+            <a href="#section-4">4. Возврат средств (ст. 26.1 ЗОЗПП)</a>
+            <a href="#section-5">5. Безопасность и ПДД (ст. 12.9 КоАП РФ)</a>
+            <a href="#section-6">6. Интеллектуальные права</a>
+            <a href="#section-7">7. Реквизиты и контакты</a>
+        </div>
 
-        <h2>2. Назначение и характер сервиса</h2>
-        <p>Приложение предоставляет информационные оповещения о дорожной обстановке, камерах контроля скорости и объектах дорожной инфраструктуры. Сервис носит исключительно ознакомительный и вспомогательный характер и не отменяет обязанности водителя следовать ПДД.</p>
+        <div class="card" id="section-1">
+            <h2>1. Термины, стороны и акцепт оферты</h2>
+            <p>1.1. <strong>Лицензиар (Правообладатель)</strong> — Коробов Михаил Дмитриевич, гражданин РФ, зарегистрированный в качестве плательщика налога на профессиональный доход (НПД) в соответствии с Федеральным законом от 27.11.2018 № 422-ФЗ.</p>
+            <p>1.2. <strong>Лицензиат (Пользователь)</strong> — дееспособное физическое лицо, установившее, запустившее или оплатившее Программу.</p>
+            <p>1.3. <strong>Программа</strong> — программа для ЭВМ «SpeedCam Pro» (GPS Радар-детектор и дорожная навигация) для платформы Android.</p>
+            <p>1.4. <strong>Акцепт Оферты</strong> — полное и безоговорочное принятие условий настоящего соглашения (ст. 438 ГК РФ) путем установки/запуска приложения либо перечисления лицензионного платежа.</p>
+        </div>
 
-        <h2>3. Тарифы и порядок оплаты</h2>
-        <p>Пользователю доступны опции расширенной лицензии: бессрочный доступ (1 690 ₽) и годовая лицензия (590 ₽). Оплата производится в безналичном порядке через платежного оператора ФНС РФ (платформа «Самозанятые.рф» / ЮKassa). Услуга считается оказанной в момент активации доступа к обновляемой базе данных камер.</p>
+        <div class="card" id="section-2">
+            <h2>2. Предмет лицензионного договора</h2>
+            <p>2.1. Лицензиар предоставляет Лицензиату право использования Программы на условиях <strong>простой (неисключительной) лицензии</strong> (ст. 1235 ГК РФ) на территории всех стран мира.</p>
+            <p>2.2. Лицензиат имеет право:</p>
+            <ul>
+                <li>Устанавливать и запускать Программу на своих мобильных устройствах Android;</li>
+                <li>Получать регулярные обновления встроенной базы данных камер фотовидеофиксации РФ и СНГ;</li>
+                <li>Использовать алгоритмы предупреждения о скоростных лимитах, контроле средней скорости, полосах ОТ и засадах.</li>
+            </ul>
+        </div>
 
-        <h2>4. Контакты и реквизиты</h2>
-        <p>Самозанятый гражданин Коробов Михаил. Email для связи и обращений: <a href="mailto:michaeldkorobov@yandex.ru">michaeldkorobov@yandex.ru</a></p>
+        <div class="card" id="section-3">
+            <h2>3. Тарифы, пробный период и фискализация (422-ФЗ)</h2>
+            <p>3.1. При первой установке каждому Пользователю предоставляется <strong>бесплатный пробный период 8 календарных дней</strong> со 100% функционала Pro без ввода данных банковских карт.</p>
+            <p>3.2. Стоимость лицензий после окончания триала:</p>
+            <table class="pricing-table">
+                <thead>
+                    <tr>
+                        <th>Тариф</th>
+                        <th>Стоимость</th>
+                        <th>Срок действия</th>
+                        <th>Что включено</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Годовая подписка</strong></td>
+                        <td><strong>590 ₽</strong></td>
+                        <td>12 месяцев</td>
+                        <td>Полный доступ к базе камер, фоновый режим, 5 голосовых пакетов, обновления.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Бессрочный доступ (Forever)</strong></td>
+                        <td><strong>1 690 ₽</strong></td>
+                        <td>Бессрочно (разово)</td>
+                        <td>Пожизненный Pro-доступ, приоритетная поддержка, перенос на новое устройство.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="highlight-box success">
+                <strong>Автоматическая фискализация:</strong> Расчеты производятся через Систему быстрых платежей (СБП), карты МИР/Visa/Mastercard и SberPay через уполномоченного партнера (ЮKassa / «Самозанятые.рф»). Электронный фискальный чек ФНС «Мой налог» формируется автоматически и направляется на email плательщика.
+            </div>
+            <p>3.3. Лицензия активируется мгновенно в автоматическом режиме после подтверждения поступления оплаты.</p>
+        </div>
+
+        <div class="card" id="section-4">
+            <h2>4. Условия и порядок возврата денежных средств (ст. 26.1 ЗОЗПП)</h2>
+            <p>4.1. В соответствии со ст. 26.1 Закона РФ «О защите прав потребителей» (дистанционный способ продажи), Пользователь вправе отказаться от лицензии и потребовать полного возврата средств в течение <strong>14 (четырнадцати) календарных дней</strong> с даты платежа при возникновении неустранимых технических сбоев или несовместимости с моделью смартфона.</p>
+            <p>4.2. Для оформления возврата направьте письмо на <a href="mailto:michaeldkorobov@yandex.ru">michaeldkorobov@yandex.ru</a> с темой «Возврат платежа», указав email, дату и сумму транзакции. Возврат средств производится в течение 3–5 рабочих дней на реквизиты, с которых была произведена оплата.</p>
+        </div>
+
+        <div class="card" id="section-5">
+            <h2>5. Статус сервиса, безопасность и ПДД (ст. 12.9 КоАП РФ)</h2>
+            <div class="highlight-box warning">
+                <strong>Внимание водителя:</strong> SpeedCam Pro носит исключительно информационно-вспомогательный характер. Использование программы не заменяет знание и безусловное соблюдение Правил дорожного движения!
+            </div>
+            <ul>
+                <li><strong>Не является антирадаром:</strong> Программа не создает радиопомех и не сканирует радиочастоты. Детектирование базируется на сопоставлении GPS-координат со справочной базой данных.</li>
+                <li><strong>Ответственность водителя:</strong> Водитель несет единоличную ответственность за безопасность движения, скоростной режим и соблюдение норм ст. 12.9 КоАП РФ.</li>
+                <li><strong>Отсутствие гарантий AS IS:</strong> Программа предоставляется «КАК ЕСТЬ». Лицензиар не возмещает штрафы ГИБДД, возникшие вследствие ошибок GPS-позиционирования или временной неактуальности данных дорожных служб.</li>
+            </ul>
+        </div>
+
+        <div class="card" id="section-6">
+            <h2>6. Авторские права и открытые лицензии</h2>
+            <p>6.1. Исключительные права на программный код, дизайн и алгоритмы SpeedCam Pro защищены законодательством РФ и принадлежат Коробову М.Д. (ст. 1259, 1270 ГК РФ).</p>
+            <p>6.2. Картографическая основа и геометрия дорог лицензированы сообществом <strong>OpenStreetMap</strong> на условиях <strong>Open Database License (ODbL 1.0)</strong> (© OpenStreetMap contributors).</p>
+        </div>
+
+        <div class="card" id="section-7">
+            <h2>7. Реквизиты Лицензиара и контакты</h2>
+            <p><strong>Лицензиар:</strong> Коробов Михаил Дмитриевич (Самозанятый гражданин РФ, плательщик налога на профессиональный доход)</p>
+            <p><strong>Электронная почта поддержки:</strong> <a href="mailto:michaeldkorobov@yandex.ru">michaeldkorobov@yandex.ru</a></p>
+            <p><strong>Политика конфиденциальности:</strong> <a href="privacy.html">Ознакомиться с Политикой конфиденциальности (152-ФЗ)</a></p>
+        </div>
+
+        <footer>
+            <p>© 2026 SpeedCam Pro. Лицензионный договор (Публичная оферта). Все права защищены.</p>
+        </footer>
     </div>
 </body>
 </html>

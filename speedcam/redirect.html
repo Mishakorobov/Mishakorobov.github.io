@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обработка платежа — SpeedCam Pro</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            text-align: center;
+            padding: 60px 20px;
+            background: #0a0e17;
+            color: #f8fafc;
+        }
+        .card {
+            max-width: 460px;
+            margin: 0 auto;
+            background: #131b2e;
+            padding: 40px 32px;
+            border-radius: 24px;
+            border: 1px solid #1e293b;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        h2 {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 15px;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        .small-note {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Анализ параметров ответа от «Самозанятые.рф» (?success&id=... или ?error&id=...)
+            const search = window.location.search.toLowerCase();
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id') || urlParams.get('order_id') || '';
+            
+            // Проверка успешности: наличие 'success' либо отсутствие 'error' / 'fail'
+            const isError = search.includes('error') || search.includes('fail') || search.includes('status=failed');
+            const isSuccess = !isError && (search.includes('success') || search.includes('status=success') || search.includes('id='));
+
+            const iconEl = document.getElementById('status-icon');
+            const titleEl = document.getElementById('status-title');
+            const descEl = document.getElementById('status-desc');
+            const btnEl = document.getElementById('return-btn');
+
+            if (isSuccess) {
+                iconEl.innerText = '✓';
+                iconEl.style.color = '#10b981';
+                titleEl.innerText = 'Оплата успешно завершена!';
+                descEl.innerText = 'Лицензия активирована. Происходит автоматический возврат в приложение SpeedCam...';
+                
+                const targetUrl = "speedcam://payment/return?gateway=selfemployed_rf&status=success&orderId=" + encodeURIComponent(orderId);
+                btnEl.href = targetUrl;
+                
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 500);
+            } else {
+                iconEl.innerText = '✕';
+                iconEl.style.color = '#ef4444';
+                titleEl.innerText = 'Оплата не завершена';
+                descEl.innerText = 'Операция была отменена или отклонена банком. Возвращаемся в приложение...';
+                btnEl.style.background = '#334155';
+                
+                const targetUrl = "speedcam://payment/return?gateway=selfemployed_rf&status=fail&orderId=" + encodeURIComponent(orderId);
+                btnEl.href = targetUrl;
+                
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 1000);
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="card">
+        <div class="icon" id="status-icon">⏳</div>
+        <h2 id="status-title">Проверка статуса оплаты...</h2>
+        <p id="status-desc">Связываемся с банком для подтверждения операции...</p>
+        <a class="btn" id="return-btn" href="speedcam://payment/return?gateway=selfemployed_rf">Вернуться в SpeedCam</a>
+        <div class="small-note">Если приложение не открылось автоматически, нажмите кнопку выше.</div>
+    </div>
+</body>
+</html>

@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Design Tokens (Figma Core Colors & System Tokens) */
     :root {
       --bg-base: #181818;
       --surface-primary: #1F1F1F;
@@ -50,6 +49,7 @@
       background-color: var(--bg-base);
       line-height: 1.5;
       overflow-x: hidden;
+      position: relative;
     }
 
     a {
@@ -57,7 +57,6 @@
       text-decoration: none;
     }
 
-    /* Accessibility */
     .skip-link {
       position: absolute;
       top: -40px;
@@ -75,12 +74,26 @@
       top: 16px;
     }
 
-    /* Layout Constraints */
     .container {
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
+      position: relative;
+    }
+
+    /* Shader Canvas Overlay */
+    .shader-hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 780px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+      mask-image: radial-gradient(circle at 50% 35%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at 50% 35%, black 20%, transparent 80%);
     }
 
     /* Typography Scale */
@@ -223,6 +236,8 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
     .hero-heading {
       max-width: 680px;
@@ -255,7 +270,7 @@
       border-radius: 50%;
     }
 
-    /* Device / Widget Mockup */
+    /* Device Mockup */
     .hero-mockup-wrapper {
       margin-top: 48px;
       width: 100%;
@@ -269,6 +284,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     }
     .mockup-header {
       display: flex;
@@ -324,12 +340,14 @@
       color: var(--text-secondary);
     }
 
-    /* Tagline Reveal Section */
+    /* Tagline Reveal */
     .tagline-section {
       padding: 96px 0;
       text-align: center;
       border-top: 1px solid var(--border-subtle);
       border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+      z-index: 1;
     }
     .tagline-container {
       max-width: 680px;
@@ -348,6 +366,8 @@
     /* Benefits Section */
     .section-padding {
       padding: 96px 0;
+      position: relative;
+      z-index: 1;
     }
     .section-header {
       text-align: center;
@@ -391,7 +411,7 @@
       color: var(--action-accent);
     }
 
-    /* How It Works Section */
+    /* Steps Section */
     .steps-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -420,7 +440,7 @@
       justify-content: center;
     }
 
-    /* FAQ Section */
+    /* FAQ */
     .faq-wrapper {
       max-width: 800px;
       margin: 0 auto;
@@ -481,9 +501,6 @@
       align-items: center;
       gap: 24px;
     }
-    .final-cta-card h2 {
-      max-width: 600px;
-    }
 
     /* Footer */
     footer {
@@ -491,6 +508,8 @@
       padding: 48px 0;
       color: var(--text-tertiary);
       font-size: 14px;
+      position: relative;
+      z-index: 1;
     }
     .footer-inner {
       display: flex;
@@ -512,7 +531,6 @@
       color: var(--text-primary);
     }
 
-    /* Scroll Reveals */
     .reveal {
       opacity: 0;
       transform: translateY(32px);
@@ -523,7 +541,6 @@
       transform: translateY(0);
     }
 
-    /* Mobile Adaptability (390px) */
     @media (max-width: 768px) {
       .heading-1 {
         font-size: 36px;
@@ -570,6 +587,9 @@
         opacity: 1 !important;
         transition: none !important;
       }
+      .shader-hero-bg {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -577,7 +597,9 @@
 
   <a href="#main-content" class="skip-link">Перейти к основному содержимому</a>
 
-  <!-- Floating Navigation -->
+  <!-- WebGL / WebGPU Shader Canvas Background -->
+  <canvas id="shader-canvas" class="shader-hero-bg" aria-hidden="true"></canvas>
+
   <header class="header-nav">
     <nav class="nav-pill" aria-label="Главная навигация">
       <a href="#" class="nav-brand">
@@ -601,7 +623,6 @@
   </header>
 
   <main id="main-content">
-    <!-- Hero Section -->
     <section class="hero-section container">
       <h1 class="heading-1 hero-heading">
         Камеры и посты контроля<br>без штрафов и сюрпризов
@@ -627,7 +648,6 @@
         База обновляется каждые 24 часа. Более 85 000 точек в РФ и СНГ
       </div>
 
-      <!-- Live Mockup -->
       <div class="hero-mockup-wrapper">
         <div class="mockup-card">
           <div class="mockup-header">
@@ -652,7 +672,6 @@
       </div>
     </section>
 
-    <!-- Mandatory Tagline Reveal Section -->
     <section class="tagline-section">
       <div class="container tagline-container">
         <p class="heading-3" id="tagline-text">
@@ -661,7 +680,6 @@
       </div>
     </section>
 
-    <!-- Benefits Section -->
     <section id="benefits" class="section-padding container reveal">
       <div class="section-header">
         <h2 class="heading-2">Специализированные режимы поездки</h2>
@@ -723,7 +741,6 @@
       </div>
     </section>
 
-    <!-- How It Works Section -->
     <section id="how-it-works" class="section-padding container reveal">
       <div class="section-header">
         <h2 class="heading-2">Три шага к началу работы</h2>
@@ -749,7 +766,6 @@
       </div>
     </section>
 
-    <!-- FAQ Section -->
     <section id="faq" class="section-padding container reveal">
       <div class="section-header">
         <h2 class="heading-2">Вопросы и ответы</h2>
@@ -819,7 +835,6 @@
       </div>
     </section>
 
-    <!-- Final CTA -->
     <section id="download" class="section-padding container reveal">
       <div class="final-cta-card">
         <h2 class="heading-2">Установите приложение и контролируйте маршрут</h2>
@@ -834,7 +849,6 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="container footer-inner">
       <div>© 2026 SpeedCam Project. Все права защищены.</div>
@@ -845,21 +859,109 @@
     </div>
   </footer>
 
-  <!-- Script: Tagline Reveal & Interactivity -->
   <script>
-    // Prepare Tagline Text for Word-by-Word Reveal
+    // -------------------------------------------------------------
+    // WebGL Ambient Shader (Road / Radar Field from shader-effects)
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('shader-canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+    if (gl) {
+      const vertexSrc = `
+        attribute vec2 position;
+        void main() {
+          gl_Position = vec4(position, 0.0, 1.0);
+        }
+      `;
+
+      // Optimized fragment shader: subtle highway perspective / radar grid waves
+      const fragmentSrc = `
+        precision mediump float;
+        uniform vec2 u_resolution;
+        uniform float u_time;
+
+        void main() {
+          vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / u_resolution.y;
+
+          // Road grid perspective
+          float speed = u_time * 0.45;
+          float z = 1.0 / (abs(uv.y + 0.35) + 0.05);
+          float x = uv.x * z;
+
+          // Wave pulse lines
+          float grid = sin(z * 4.0 - speed * 5.0) * cos(x * 6.0);
+          float line = smoothstep(0.4, 0.98, grid);
+
+          // Deep dark palette: #181818 base with subtle #2563EB and #38BDF8 accents
+          vec3 baseColor = vec3(0.094, 0.094, 0.094);
+          vec3 blueAccent = vec3(0.145, 0.388, 0.921);
+          vec3 cyanAccent = vec3(0.22, 0.741, 0.972);
+
+          float fade = smoothstep(0.0, 1.2, abs(uv.y + 0.35));
+          vec3 col = mix(baseColor, blueAccent, line * 0.22 * fade);
+          col += cyanAccent * (0.04 / (length(uv) + 0.25));
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `;
+
+      function createShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+      }
+
+      const program = gl.createProgram();
+      gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexSrc));
+      gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentSrc));
+      gl.linkProgram(program);
+      gl.useProgram(program);
+
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        -1, -1,  1, -1, -1,  1,
+        -1,  1,  1, -1,  1,  1
+      ]), gl.STATIC_DRAW);
+
+      const positionLoc = gl.getAttribLocation(program, 'position');
+      gl.enableVertexAttribArray(positionLoc);
+      gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+
+      const resLoc = gl.getUniformLocation(program, 'u_resolution');
+      const timeLoc = gl.getUniformLocation(program, 'u_time');
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = canvas.clientWidth * dpr;
+        canvas.height = canvas.clientHeight * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      let startTime = performance.now();
+      function render() {
+        const t = (performance.now() - startTime) * 0.001;
+        gl.uniform2f(resLoc, canvas.width, canvas.height);
+        gl.uniform1f(timeLoc, t);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+    }
+
+    // -------------------------------------------------------------
+    // Word-by-Word Reveal & Interactivity
+    // -------------------------------------------------------------
     const taglineEl = document.getElementById('tagline-text');
     if (taglineEl) {
       const words = taglineEl.innerText.trim().split(/\s+/);
       taglineEl.innerHTML = words.map(w => `<span class="tagline-word">${w}</span>`).join(' ');
     }
 
-    // Scroll Reveal with IntersectionObserver
-    const observerOptions = {
-      root: null,
-      threshold: 0.15
-    };
-
+    const observerOptions = { root: null, threshold: 0.15 };
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -871,7 +973,6 @@
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-    // Throttled Tagline Reveal by Scroll Progress
     const taglineWords = document.querySelectorAll('.tagline-word');
     const taglineSection = document.querySelector('.tagline-section');
 
@@ -905,7 +1006,6 @@
       }
     });
 
-    // FAQ Accordion Toggle
     document.querySelectorAll('.faq-trigger').forEach(button => {
       button.addEventListener('click', () => {
         const item = button.parentElement;

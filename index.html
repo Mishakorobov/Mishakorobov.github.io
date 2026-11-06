@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SpeedCam — Радар-детектор, рамки Платон и посты АВГК офлайн</title>
   <meta name="description" content="Автономный радар-детектор для легкового и грузового транспорта. База камер скорости, весового контроля АВГК и рамок Платон без интернета.">
+  <script>
+    (function() {
+      var search = window.location.search.toLowerCase();
+      if (search.includes('success') || search.includes('error') || search.includes('fail') || search.includes('id=')) {
+        var urlParams = new URLSearchParams(window.location.search);
+        var orderId = urlParams.get('id') || urlParams.get('order_id') || '';
+        var isError = search.includes('error') || search.includes('fail') || search.includes('status=failed');
+        var status = isError ? 'fail' : 'success';
+        var targetUrl = "speedcam://payment/return?gateway=selfemployed_rf&status=" + status + "&orderId=" + encodeURIComponent(orderId);
+        window.location.href = targetUrl;
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -836,12 +849,19 @@
 
   <!-- Footer -->
   <footer>
-    <div class="container footer-inner">
-      <div>© 2026 SpeedCam Project. Все права защищены.</div>
-      <ul class="footer-links">
-        <li><a href="privacy.html">Политика конфиденциальности</a></li>
-        <li><a href="terms.html">Пользовательское соглашение</a></li>
-      </ul>
+    <div class="container">
+      <div class="footer-inner">
+        <div>© 2026 SpeedCam Project. Все права защищены.</div>
+        <ul class="footer-links">
+          <li><a href="privacy.html">Политика конфиденциальности</a></li>
+          <li><a href="terms.html">Пользовательское соглашение</a></li>
+        </ul>
+      </div>
+      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-subtle); font-size: 13px; line-height: 1.6; color: var(--text-tertiary);">
+        <p><strong>Лицензиар / Исполнитель:</strong> Коробов Михаил Дмитриевич (Самозанятый гражданин РФ, плательщик налога на профессиональный доход по 422-ФЗ, освобождён от применения ККТ по п. 2.2 ст. 2 54-ФЗ). Электронный чек ФНС формируется и направляется автоматически.</p>
+        <p style="margin-top: 6px;"><strong>Служба поддержки и досудебные претензии:</strong> <a href="mailto:michaeldkorobov@yandex.ru" style="color: var(--action-accent);">michaeldkorobov@yandex.ru</a> | Возврат денежных средств осуществляется в соответствии со ст. 26.1 Закона РФ «О защите прав потребителей» в течение 14 дней с даты платежа по обращению на email поддержки.</p>
+        <p style="margin-top: 6px;">Программное обеспечение является пассивной информационной системой (не радар-детектором/антирадаром по смыслу ст. 13.3 КоАП РФ). Информация о дорожных объектах носит справочно-предупредительный характер и не освобождает водителя от неукоснительного соблюдения ПДД РФ и требований дорожных знаков.</p>
+      </div>
     </div>
   </footer>
 

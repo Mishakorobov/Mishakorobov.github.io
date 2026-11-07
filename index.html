@@ -1,1224 +1,776 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SpeedCam — Радар-детектор, рамки Платон и посты АВГК офлайн</title>
-  <meta name="selfwork.ru" content="CN66BpUwuzSYOWFTVPNyGAv9CzOUVtmIW5r0wd2EuIfhehBtSY" />
-  <meta name="description" content="Автономный радар-детектор для легкового и грузового транспорта. База камер скорости, весового контроля АВГК и рамок Платон без интернета.">
-  <script>
-    (function() {
-      var search = window.location.search.toLowerCase();
-      if (search.includes('success') || search.includes('error') || search.includes('fail') || search.includes('id=')) {
-        var urlParams = new URLSearchParams(window.location.search);
-        var orderId = urlParams.get('id') || urlParams.get('order_id') || '';
-        var isError = search.includes('error') || search.includes('fail') || search.includes('status=failed');
-        var status = isError ? 'fail' : 'success';
-        var targetUrl = "speedcam://payment/return?gateway=selfemployed_rf&status=" + status + "&orderId=" + encodeURIComponent(orderId);
-        window.location.href = targetUrl;
-      }
-    })();
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Design Tokens (Figma Core Colors & System Tokens) */
-    :root {
-      --bg-base: #181818;
-      --surface-primary: #1F1F1F;
-      --surface-secondary: #272727;
-      --surface-tertiary: #313131;
-      --border-primary: #313131;
-      --border-subtle: #272727;
-      --text-primary: #F9FAFB;
-      --text-secondary: #9CA3AF;
-      --text-tertiary: #6B7280;
-      --action-primary: #2563EB;
-      --action-primary-hover: #1D4ED8;
-      --action-accent: #38BDF8;
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-xl: 16px;
-      --radius-2xl: 24px;
-      --font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-      --ease-custom: cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeedCam Pro — Умный радар-детектор и Дорожная навигация</title>
+    <meta name="description" content="Официальный сайт SpeedCam Pro: точный GPS радар-детектор с базой камер РФ и СНГ, голосовыми оповещениями, проекцией HUD, контролем Платона и АВГК. Тарифы, цены и описание покупок.">
+    <meta name="selfwork.ru" content="CN66BpUwuzSYOWFTVPNyGAv9CzOUVtmIW5r0wd2EuIfhehBtSY" />
+    <script>
+        (function() {
+            var search = window.location.search.toLowerCase();
+            if (search.includes('success') || search.includes('error') || search.includes('fail') || search.includes('id=')) {
+                var urlParams = new URLSearchParams(window.location.search);
+                var orderId = urlParams.get('id') || urlParams.get('order_id') || '';
+                var isError = search.includes('error') || search.includes('fail') || search.includes('status=failed');
+                var status = isError ? 'fail' : 'success';
+                var targetUrl = "speedcam://payment/return?gateway=selfemployed_rf&status=" + status + "&orderId=" + encodeURIComponent(orderId);
+                window.location.href = targetUrl;
+            }
+        })();
+    </script>
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-card: #131b2e;
+            --bg-card-hover: #19233c;
+            --bg-surface: #0f172a;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #60a5fa;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-secondary: #cbd5e1;
+            --border: #1e293b;
+            --border-highlight: #3b82f6;
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.12);
+            --badge-gold: #f59e0b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: rgba(10, 14, 23, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.3px;
+        }
+        .logo-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            padding: 5px 11px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #fff;
+        }
+        .btn-terms-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(37, 99, 235, 0.15);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-terms-nav:hover {
+            background: rgba(37, 99, 235, 0.3);
+            border-color: #60a5fa;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+        .pay-tags-bar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .pay-tag {
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .hero {
+            padding: 64px 0 40px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            color: #60a5fa;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 40%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 720px;
+            margin: 0 auto 32px;
+        }
+        .hero-cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            padding: 13px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+        }
+        .btn-secondary {
+            background: var(--bg-card);
+            color: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 13px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #1e293b;
+            border-color: #334155;
+            transform: translateY(-2px);
+        }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 20px;
+            margin-bottom: 70px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 26px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: #334155;
+            background: var(--bg-card-hover);
+        }
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.55;
+        }
 
-    html {
-      scroll-behavior: smooth;
-      background-color: var(--bg-base);
-      color: var(--text-primary);
-      font-family: var(--font-family);
-      -webkit-font-smoothing: antialiased;
-    }
+        /* Pricing Section */
+        .pricing-section {
+            padding: 60px 0 70px;
+            border-top: 1px solid var(--border);
+        }
+        .section-header {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 48px;
+        }
+        .section-badge {
+            display: inline-block;
+            color: #60a5fa;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #fff;
+            letter-spacing: -0.4px;
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 34px 26px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+        }
+        .price-card:hover {
+            border-color: #334155;
+            transform: translateY(-3px);
+        }
+        .price-card.popular {
+            border-color: #3b82f6;
+            background: linear-gradient(180deg, #15223e 0%, #131b2e 100%);
+            box-shadow: 0 12px 36px rgba(37, 99, 235, 0.22);
+        }
+        .card-badge {
+            position: absolute;
+            top: -12px;
+            right: 22px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .card-badge.gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+        }
+        .card-badge.blue {
+            background: #2563eb;
+            color: #fff;
+        }
+        .card-badge.green {
+            background: #10b981;
+            color: #fff;
+        }
+        .price-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .price-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            min-height: 38px;
+        }
+        .price-value {
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            margin: 18px 0 20px;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .price-value span {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .price-features {
+            list-style: none;
+            margin-bottom: 28px;
+            flex-grow: 1;
+        }
+        .price-features li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 11px;
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            line-height: 1.45;
+        }
+        .price-features li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .card-action-btn {
+            display: block;
+            text-align: center;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .card-action-btn.primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .card-action-btn.primary:hover {
+            background: var(--accent-hover);
+        }
+        .card-action-btn.outline {
+            background: #1e293b;
+            color: #f1f5f9;
+            border: 1px solid #334155;
+        }
+        .card-action-btn.outline:hover {
+            background: #28354b;
+        }
 
-    body {
-      background-color: var(--bg-base);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
+        /* Purchase Description Bento Box */
+        .purchases-info-section {
+            padding: 50px 0 60px;
+            border-top: 1px solid var(--border);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 20px;
+            margin-top: 36px;
+        }
+        .info-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 26px;
+        }
+        .info-card h4 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .info-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 10px;
+        }
+        .info-card p:last-child {
+            margin-bottom: 0;
+        }
+        .highlight-notice {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.28);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-top: 28px;
+            font-size: 14px;
+            color: #d1fae5;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .highlight-notice span {
+            font-size: 20px;
+            line-height: 1;
+        }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+        /* Legal Box & Links */
+        .legal-box {
+            background: #0b1120;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            margin: 50px 0 40px;
+        }
+        .legal-box h3 {
+            font-size: 19px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .legal-box p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .legal-box strong {
+            color: var(--text-secondary);
+        }
+        .legal-links-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .btn-offer-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-offer-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.4);
+            color: #fff;
+        }
+        .btn-privacy-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid #334155;
+            transition: all 0.2s ease;
+        }
+        .btn-privacy-link:hover {
+            color: #fff;
+            border-color: #60a5fa;
+            background: #24324a;
+        }
 
-    /* Accessibility */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 16px;
-      background: var(--action-primary);
-      color: #FFFFFF;
-      padding: 8px 12px;
-      z-index: 100;
-      border-radius: var(--radius-sm);
-      transition: top 300ms var(--ease-custom);
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .skip-link:focus {
-      top: 16px;
-    }
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 34px 0 54px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .footer-nav a {
+            color: var(--accent-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .footer-nav a:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
 
-    /* Layout Constraints */
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Typography Scale */
-    .heading-1 {
-      font-size: 60px;
-      line-height: 60px;
-      font-weight: 600;
-      text-wrap: balance;
-    }
-    .heading-2 {
-      font-size: 48px;
-      line-height: 48px;
-      font-weight: 600;
-      text-wrap: balance;
-    }
-    .heading-3 {
-      font-size: 36px;
-      line-height: 40px;
-      font-weight: 600;
-      text-wrap: balance;
-    }
-    .title-2 {
-      font-size: 18px;
-      line-height: 28px;
-      font-weight: 500;
-    }
-    .title-3 {
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 500;
-    }
-    .body-1 {
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 400;
-      text-wrap: pretty;
-    }
-    .body-2 {
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: 400;
-      text-wrap: pretty;
-    }
-    .caption-1 {
-      font-size: 12px;
-      line-height: 16px;
-      font-weight: 500;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 12px;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: background-color 300ms var(--ease-custom), transform 300ms var(--ease-custom), border-color 300ms var(--ease-custom);
-      text-align: center;
-    }
-    .btn:active {
-      transform: scale(0.98);
-    }
-    .btn:focus-visible {
-      outline: 2px solid var(--action-accent);
-      outline-offset: 2px;
-    }
-    .btn-primary {
-      background-color: var(--action-primary);
-      color: #FFFFFF;
-    }
-    .btn-primary:hover {
-      background-color: var(--action-primary-hover);
-    }
-    .btn-secondary {
-      background-color: var(--surface-secondary);
-      border-color: var(--border-primary);
-      color: var(--text-primary);
-    }
-    .btn-secondary:hover {
-      background-color: var(--surface-tertiary);
-    }
-
-    /* Navigation */
-    .header-nav {
-      position: fixed;
-      top: 16px;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      display: flex;
-      justify-content: center;
-      padding: 0 16px;
-    }
-    .nav-pill {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 860px;
-      padding: 8px 16px;
-      background-color: rgba(31, 31, 31, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-xl);
-    }
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 14px;
-      color: var(--text-secondary);
-      transition: color 300ms var(--ease-custom);
-    }
-    .nav-links a:hover {
-      color: var(--text-primary);
-    }
-
-    /* Hero Section */
-    .hero-section {
-      padding-top: 160px;
-      padding-bottom: 96px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .hero-heading {
-      max-width: 680px;
-      margin-bottom: 24px;
-      background: linear-gradient(90deg, #FFFFFF 0%, #9B9B9B 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-subheading {
-      max-width: 680px;
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .hero-proof {
-      color: var(--text-tertiary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #10B981;
-      border-radius: 50%;
-    }
-
-    /* Device / Widget Mockup */
-    .hero-mockup-wrapper {
-      margin-top: 48px;
-      width: 100%;
-      max-width: 640px;
-    }
-    .mockup-card {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-2xl);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .mockup-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 12px;
-    }
-    .mockup-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background-color: var(--surface-secondary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-sm);
-      padding: 4px 8px;
-      font-size: 12px;
-      color: #F59E0B;
-      font-weight: 600;
-    }
-    .mockup-content {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 20px;
-      align-items: center;
-      text-align: left;
-    }
-    .speed-limit-circle {
-      width: 76px;
-      height: 76px;
-      border: 6px solid #EF4444;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--text-primary);
-      background-color: #000000;
-    }
-    .alert-details {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .alert-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    .alert-desc {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    /* Tagline Reveal Section */
-    .tagline-section {
-      padding: 96px 0;
-      text-align: center;
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .tagline-container {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-    .tagline-word {
-      opacity: 0.28;
-      transition: opacity 500ms var(--ease-custom);
-      display: inline-block;
-    }
-    .tagline-word.active {
-      opacity: 1;
-      color: var(--text-primary);
-    }
-
-    /* Benefits Section */
-    .section-padding {
-      padding: 96px 0;
-    }
-    .section-header {
-      text-align: center;
-      max-width: 680px;
-      margin: 0 auto 64px auto;
-    }
-    .section-header h2 {
-      margin-bottom: 16px;
-    }
-    .section-header p {
-      color: var(--text-secondary);
-    }
-
-    .benefits-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-    .benefit-card {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-xl);
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: border-color 300ms var(--ease-custom);
-    }
-    .benefit-card:hover {
-      border-color: var(--action-primary);
-    }
-    .icon-box {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
-      background-color: var(--surface-secondary);
-      border: 1px solid var(--border-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--action-accent);
-    }
-
-    /* How It Works Section */
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .step-card {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .step-number {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--action-accent);
-      background-color: var(--surface-secondary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-sm);
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* FAQ Section */
-    .faq-wrapper {
-      max-width: 800px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .faq-item {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-    .faq-trigger {
-      width: 100%;
-      text-align: left;
-      padding: 20px 24px;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 16px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .faq-trigger:focus-visible {
-      outline: 2px solid var(--action-accent);
-    }
-    .faq-icon {
-      transition: transform 300ms var(--ease-custom);
-    }
-    .faq-item.open .faq-icon {
-      transform: rotate(180deg);
-    }
-    .faq-content {
-      padding: 0 24px 20px 24px;
-      color: var(--text-secondary);
-      display: none;
-      font-size: 14px;
-      line-height: 22px;
-    }
-    .faq-item.open .faq-content {
-      display: block;
-    }
-
-    /* Final CTA */
-    .final-cta-card {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-2xl);
-      padding: 64px 32px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-    }
-    .final-cta-card h2 {
-      max-width: 600px;
-    }
-
-    /* Pricing Grid */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-    .price-card {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-xl);
-      padding: 32px 24px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 300ms var(--ease-custom), border-color 300ms var(--ease-custom);
-    }
-    .price-card:hover {
-      transform: translateY(-4px);
-      border-color: #4b5563;
-    }
-    .price-card.popular {
-      border-color: var(--action-primary);
-      background: linear-gradient(180deg, #1e2638 0%, var(--surface-primary) 100%);
-      box-shadow: 0 12px 36px rgba(37, 99, 235, 0.2);
-    }
-    .card-badge {
-      position: absolute;
-      top: -12px;
-      right: 20px;
-      padding: 4px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .card-badge.gold {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
-      color: #FFFFFF;
-    }
-    .card-badge.blue {
-      background: var(--action-primary);
-      color: #FFFFFF;
-    }
-    .card-badge.green {
-      background: #10B981;
-      color: #FFFFFF;
-    }
-    .price-card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 6px;
-    }
-    .price-subtitle {
-      font-size: 13px;
-      color: var(--text-secondary);
-      min-height: 38px;
-    }
-    .price-value {
-      font-size: 38px;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin: 18px 0 20px;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .price-value span {
-      font-size: 14px;
-      color: var(--text-secondary);
-      font-weight: 400;
-    }
-    .price-features {
-      list-style: none;
-      margin-bottom: 28px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .price-features li {
-      font-size: 14px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      line-height: 1.45;
-    }
-    .price-features li::before {
-      content: "✓";
-      color: #10B981;
-      font-weight: bold;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-    .price-features strong {
-      color: var(--text-primary);
-    }
-
-    /* Purchases Info Grid */
-    .purchases-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 36px;
-    }
-    .info-card {
-      background-color: var(--surface-primary);
-      border: 1px solid var(--border-primary);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .info-card h4 {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .info-card p {
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      line-height: 1.55;
-    }
-    .info-card strong {
-      color: var(--text-primary);
-    }
-    .highlight-notice {
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px solid rgba(16, 185, 129, 0.28);
-      border-radius: var(--radius-lg);
-      padding: 18px 22px;
-      margin-top: 24px;
-      font-size: 14px;
-      color: #D1FAE5;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      line-height: 1.5;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border-subtle);
-      padding: 48px 0;
-      color: var(--text-tertiary);
-      font-size: 14px;
-    }
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-    .footer-links a {
-      color: var(--text-secondary);
-      transition: color 300ms var(--ease-custom);
-    }
-    .footer-links a:hover {
-      color: var(--text-primary);
-    }
-
-    /* Scroll Reveals */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 600ms var(--ease-custom), transform 600ms var(--ease-custom);
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Mobile Adaptability (390px) */
-    @media (max-width: 768px) {
-      .heading-1 {
-        font-size: 36px;
-        line-height: 40px;
-      }
-      .heading-2 {
-        font-size: 30px;
-        line-height: 36px;
-      }
-      .heading-3 {
-        font-size: 24px;
-        line-height: 32px;
-      }
-      .nav-links {
-        display: none;
-      }
-      .benefits-grid, .steps-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero-section {
-        padding-top: 120px;
-      }
-      .hero-actions {
-        flex-direction: column;
-        width: 100%;
-      }
-      .hero-actions .btn {
-        width: 100%;
-      }
-      .mockup-content {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        text-align: center;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .reveal {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-      }
-      .tagline-word {
-        opacity: 1 !important;
-        transition: none !important;
-      }
-    }
-  </style>
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 16px; }
+            .section-title { font-size: 26px; }
+            .nav { flex-direction: column; align-items: flex-start; }
+            .nav-links { width: 100%; justify-content: flex-start; }
+            .legal-box { padding: 24px; }
+            .pricing-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-
-  <a href="#main-content" class="skip-link">Перейти к основному содержимому</a>
-
-  <!-- Floating Navigation -->
-  <header class="header-nav">
-    <nav class="nav-pill" aria-label="Главная навигация">
-      <a href="#" class="nav-brand">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="m4.93 4.93 4.24 4.24"></path>
-          <path d="m14.83 9.17 4.24-4.24"></path>
-          <path d="m14.83 14.83 4.24 4.24"></path>
-          <path d="m9.17 14.83-4.24 4.24"></path>
-          <circle cx="12" cy="12" r="2"></circle>
-        </svg>
-        SpeedCam
-      </a>
-      <ul class="nav-links">
-        <li><a href="#benefits">Возможности</a></li>
-        <li><a href="#pricing">Тарифы</a></li>
-        <li><a href="#purchases">Оплата и доставка</a></li>
-        <li><a href="#faq">Вопросы</a></li>
-      </ul>
-      <a href="terms.html" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px; color: var(--action-accent); border-color: rgba(56, 189, 248, 0.35);">📄 Оферта и соглашение</a>
-      <a href="#download" class="btn btn-primary" style="padding: 6px 12px; font-size: 14px;">Скачать</a>
-    </nav>
-  </header>
-
-  <main id="main-content">
-    <!-- Hero Section -->
-    <section class="hero-section container">
-      <h1 class="heading-1 hero-heading">
-        Камеры и посты контроля<br>без штрафов и сюрпризов
-      </h1>
-      <p class="body-1 hero-subheading">
-        Автономная база дорожных комплексов, рамок системы «Платон» и весогабаритного контроля АВГК с упреждающим голосовым оповещением.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#download" class="btn btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Скачать для Android
-        </a>
-        <a href="#pricing" class="btn btn-secondary">Тарифы и цены</a>
-      </div>
-
-      <div class="caption-1 hero-proof">
-        <span class="status-dot"></span>
-        База обновляется каждые 24 часа. Более 85 000 точек в РФ и СНГ
-      </div>
-
-      <!-- Live Mockup -->
-      <div class="hero-mockup-wrapper">
-        <div class="mockup-card">
-          <div class="mockup-header">
-            <span class="caption-1" style="color: var(--text-secondary);">Фоновый оверлей поверх карт</span>
-            <span class="mockup-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2v20"></path>
-                <path d="m17 5-5-3-5 3"></path>
-                <path d="m17 19-5 3-5-3"></path>
-              </svg>
-              Контроль АВГК через 450 м
-            </span>
-          </div>
-          <div class="mockup-content">
-            <div class="speed-limit-circle">90</div>
-            <div class="alert-details">
-              <div class="alert-title">Автоматический весовой пост</div>
-              <div class="alert-desc">Фиксация нагрузки на ось, габаритов и скорости движения по всем полосам.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Mandatory Tagline Reveal Section -->
-    <section class="tagline-section">
-      <div class="container tagline-container">
-        <p class="heading-3" id="tagline-text">
-          Точные предупреждения о дорожной обстановке в фоновом режиме, сохраняющие бюджет водителя и предсказуемость в дальних рейсах.
-        </p>
-      </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section id="benefits" class="section-padding container reveal">
-      <div class="section-header">
-        <h2 class="heading-2">Специализированные режимы поездки</h2>
-        <p class="body-1">Полный набор алгоритмов для безопасного вождения легковых машин и коммерческого автопарка.</p>
-      </div>
-
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-          </div>
-          <h3 class="title-2">Грузовой профиль и Платон</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Оповещения о рамках взимания платы «Платон», автоматических весах АВГК и знаках ограничения нагрузки на ось.</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="1" y1="1" x2="23" y2="23"></line>
-              <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
-              <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
-              <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
-              <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
-              <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-              <line x1="12" y1="20" x2="12.01" y2="20"></line>
-            </svg>
-          </div>
-          <h3 class="title-2">Полный автономный режим</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Локальная база данных хранится непосредственно на смартфоне. Приложение не требует подключения к интернету на трассе.</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <rect x="7" y="7" width="3" height="9"></rect>
-              <rect x="14" y="7" width="3" height="5"></rect>
-            </svg>
-          </div>
-          <h3 class="title-2">Работа поверх навигатора</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Компактный плавающий виджет и голосовые сигналы интегрируются поверх Яндекс Карт, 2ГИС или нативного ПО автомобиля.</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="icon-box">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-          </div>
-          <h3 class="title-2">Адаптивная дальность</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Дистанция предупреждения автоматически рассчитывается по динамической формуле в зависимости от фактической скорости ТС.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="section-padding container reveal">
-      <div class="section-header">
-        <div class="caption-1" style="color: var(--action-accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; font-weight: 700;">Прозрачная монетизация</div>
-        <h2 class="heading-2">Цены тарифов и лицензий</h2>
-        <p class="body-1">Честный доступ без скрытых платежей, подписок-ловушек и автоматических списаний.</p>
-      </div>
-
-      <div class="pricing-grid">
-        <!-- Plan 1: Free Trial -->
-        <div class="price-card">
-          <div>
-            <div class="card-badge green">Бесплатно</div>
-            <h3>Пробный период</h3>
-            <p class="price-subtitle">Ознакомление со всеми возможностями программы</p>
-            <div class="price-value">0 ₽ <span>/ 8 дней</span></div>
-            <ul class="price-features">
-              <li><strong>100% функций</strong> без ограничений</li>
-              <li>Полная база камер России и СНГ</li>
-              <li>Все голосовые пакеты дикторов</li>
-              <li>Фоновый режим и плавающий виджет</li>
-              <li><strong>Без ввода банковской карты</strong></li>
-              <li>Никаких скрытых условий</li>
-            </ul>
-          </div>
-          <a href="#download" class="btn btn-secondary" style="width: 100%;">Активация при установке</a>
-        </div>
-
-        <!-- Plan 2: 1 Year -->
-        <div class="price-card">
-          <div>
-            <div class="card-badge blue">12 месяцев</div>
-            <h3>Подписка на 1 год</h3>
-            <p class="price-subtitle">Оптимальный доступ для активных водителей</p>
-            <div class="price-value">590 ₽ <span>/ год (~49 ₽/мес)</span></div>
-            <ul class="price-features">
-              <li><strong>365 дней</strong> полного Pro-доступа</li>
-              <li>Ежедневные обновления базы камер и АЗС</li>
-              <li>Грузовой профиль (Платон и АВГК)</li>
-              <li>Голос TTS с выбором темпа и аудиопакеты</li>
-              <li><strong>Разовый платёж</strong> — автосписаний нет</li>
-              <li>Официальный электронный чек ФНС</li>
-            </ul>
-          </div>
-          <a href="#download" class="btn btn-secondary" style="width: 100%;">Оформить в приложении</a>
-        </div>
-
-        <!-- Plan 3: Lifetime -->
-        <div class="price-card popular">
-          <div class="card-badge gold">Выгода навсегда</div>
-          <div>
-            <h3>Бессрочный доступ</h3>
-            <p class="price-subtitle">Единоразовый платёж на всю жизнь</p>
-            <div class="price-value">1 690 ₽ <span>разово</span></div>
-            <ul class="price-features">
-              <li><strong>Пожизненная лицензия Pro</strong></li>
-              <li>Все будущие обновления базы и алгоритмов</li>
-              <li>Доступ ко всем новым модулям навсегда</li>
-              <li>Привязка к устройству и <strong>перенос</strong></li>
-              <li>HUD-проекция на лобовое стекло</li>
-              <li>Приоритетная персональная поддержка</li>
-            </ul>
-          </div>
-          <a href="#download" class="btn btn-primary" style="width: 100%;">Купить навсегда в приложении</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Purchases Info Section -->
-    <section id="purchases" class="section-padding container reveal">
-      <div class="section-header">
-        <div class="caption-1" style="color: var(--action-accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; font-weight: 700;">Порядок оплаты и правила</div>
-        <h2 class="heading-2">Описание покупок и условий обслуживания</h2>
-        <p class="body-1">Вся информация о порядке совершения платежа, доставке лицензии, безопасности и возврате.</p>
-      </div>
-
-      <div class="purchases-grid">
-        <div class="info-card">
-          <h4>💳 Способы оплаты</h4>
-          <p>Оплата производится в защищённой платёжной форме внутри приложения. Поддерживаются:</p>
-          <p>• <strong>СБП (Система быстрых платежей)</strong> — оплата в 1 клик через мобильный банк без ввода номера карты;<br>
-          • <strong>Банковские карты МИР, Visa, Mastercard</strong> любых российских банков;<br>
-          • <strong>SberPay</strong> и онлайн-банкинг.</p>
-        </div>
-
-        <div class="info-card">
-          <h4>🚫 Отсутствие автосписаний</h4>
-          <p>Все тарифы являются <strong>строго разовыми покупками</strong>. Мы не привязываем вашу банковскую карту и не оформляем рекуррентные подписки.</p>
-          <p>Когда срок действия тарифа на 1 год истекает, с карты ничего не спишется. Вы сами принимаете решение о продлении.</p>
-        </div>
-
-        <div class="info-card">
-          <h4>⚡ Мгновенная доставка лицензии</h4>
-          <p>Лицензия является цифровым товаром и активируется в приложении <strong>мгновенно и автоматически</strong> в течение 2–5 секунд после подтверждения транзакции банком.</p>
-          <p>Вам не нужно ждать ручной отправки ключа или вводить промокоды — программа сразу открывает Pro-доступ.</p>
-        </div>
-
-        <div class="info-card">
-          <h4>🧾 Фискализация и чек ФНС (422-ФЗ)</h4>
-          <p>Лицензиар применяет специальный налоговый режим НПД (самозанятый гражданин РФ). В соответствии с п. 2.2 ст. 2 54-ФЗ и ст. 14 422-ФЗ расчёты проводятся официально.</p>
-          <p>Официальный электронный фискальный чек ФНС России формируется через сервис «Мой налог» и направляется на email, указанный при покупке.</p>
-        </div>
-
-        <div class="info-card">
-          <h4>🔄 Перенос и восстановление</h4>
-          <p>Ваша лицензия защищена уникальным криптографическим идентификатором и привязана к защищённому облаку.</p>
-          <p>При смене телефона, сбросе настроек или переустановке приложения достаточно нажать кнопку <strong>«Восстановить покупку»</strong> в окне лицензии, указав email или номер заказа.</p>
-        </div>
-
-        <div class="info-card">
-          <h4>🛡️ Гарантия возврата средств</h4>
-          <p>В соответствии со статьёй 26.1 Закона РФ «О защите прав потребителей» (дистанционный способ продажи), вы вправе отказаться от покупки в течение <strong>14 дней</strong> с даты платежа.</p>
-          <p>При возникновении технических неполадок или несовместимости с моделью телефона средства возвращаются в полном объёме по обращению на email поддержки.</p>
-        </div>
-      </div>
-
-      <div class="highlight-notice">
-        <span style="font-size: 20px;">💡</span>
-        <div>
-          <strong>Безопасность транзакций:</strong> Все платёжные операции обрабатываются по международному стандарту безопасности PCI DSS через сертифицированных платёжных партнёров (Платформа «Самозанятые.рф» АО «Банк 131» / ЮKassa). Персональные платёжные данные покупателей не сохраняются на серверах приложения.
-        </div>
-      </div>
-    </section>
-
-
-
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="section-padding container reveal">
-      <div class="section-header">
-        <h2 class="heading-2">Три шага к началу работы</h2>
-        <p class="body-1">Быстрый запуск без обязательной регистрации и сложных настроек.</p>
-      </div>
-
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">1</div>
-          <h3 class="title-3">Выбор типа автомобиля</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Укажите грузоподъемность или выберите легковой режим, чтобы исключить ненужные предупреждения.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">2</div>
-          <h3 class="title-3">Синхронизация карты</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Загрузите пакет интересующих областей в локальное хранилище для бесперебойной работы офлайн.</p>
-        </div>
-        <div class="step-card">
-          <div class="step-number">3</div>
-          <h3 class="title-3">Фоновое сопровождение</h3>
-          <p class="body-2" style="color: var(--text-secondary);">Включите фоновый мониторинг и переключитесь в привычный картографический сервис.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="section-padding container reveal">
-      <div class="section-header">
-        <h2 class="heading-2">Вопросы и ответы</h2>
-        <p class="body-1">Технические подробности функционирования системы и обновления данных.</p>
-      </div>
-
-      <div class="faq-wrapper">
-        <div class="faq-item">
-          <button class="faq-trigger" aria-expanded="false">
-            Работает ли приложение без мобильной сети?
-            <span class="faq-icon">↓</span>
-          </button>
-          <div class="faq-content">
-            Да. Вся база точек, скоростные лимиты и типы комплексов хранятся локально в оптимизированной базе SQLite на устройстве. Доступ к сети требуется только для обновления координат.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-trigger" aria-expanded="false">
-            Размечены ли посты весового контроля АВГК и рамки «Платон»?
-            <span class="faq-icon">↓</span>
-          </button>
-          <div class="faq-content">
-            Да, в грузовом профиле активны оповещения о стационарных пунктах весового контроля, автоматических рамках АВГК и датчиках системы «Платон» с указанием направления движения.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-trigger" aria-expanded="false">
-            Можно ли выводить звук через штатную аудиосистему авто?
-            <span class="faq-icon">↓</span>
-          </button>
-          <div class="faq-content">
-            Да. Поддерживаются аудиоканалы Bluetooth HFP/A2DP, позволяющие воспроизводить голосовые уведомления в режиме телефонного звонка поверх радио или музыки.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-trigger" aria-expanded="false">
-            Из каких источников берутся координаты объектов?
-            <span class="faq-icon">↓</span>
-          </button>
-          <div class="faq-content">
-            Сведения формируются на базе открытых данных ЦОДД, реестров ГИБДД, разметки OpenStreetMap и перекрестной верификации через сообщество SpeedCamOnLine.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-trigger" aria-expanded="false">
-            Сколько свободного места требуется для базы данных?
-            <span class="faq-icon">↓</span>
-          </button>
-          <div class="faq-content">
-            Полный пакет объектов по РФ и сопредельным странам занимает до 45 МБ дискового пространства и не нагружает оперативную память устройства.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button class="faq-trigger" aria-expanded="false">
-            Требуется ли платная подписка для работы?
-            <span class="faq-icon">↓</span>
-          </button>
-          <div class="faq-content">
-            Базовый функционал, локальная работа и регулярные обновления стационарных дорожных комплексов предоставляются бесплатно.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section id="download" class="section-padding container reveal">
-      <div class="final-cta-card">
-        <h2 class="heading-2">Установите приложение и контролируйте маршрут</h2>
-        <p class="body-1" style="max-width: 540px; color: var(--text-secondary);">
-          Свежие базы данных, отсутствие рекламы и полная независимость от наличия сотовой связи в дороге.
-        </p>
-        <div class="hero-actions" style="margin-bottom: 0;">
-          <a href="redirect.html" class="btn btn-primary">Скачать установочный APK</a>
-          <a href="https://www.rustore.ru" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">Доступно в RuStore</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
     <div class="container">
-      <div class="footer-inner">
-        <div>© 2026 SpeedCam Project. Все права защищены.</div>
-        <ul class="footer-links">
-          <li><a href="privacy.html">Политика конфиденциальности</a></li>
-          <li><a href="terms.html">Оферта и пользовательское соглашение</a></li>
-        </ul>
-      </div>
-      <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-subtle); font-size: 13px; line-height: 1.6; color: var(--text-tertiary);">
-        <p><strong>Лицензиар / Исполнитель:</strong> Коробов Михаил Дмитриевич (Самозанятый гражданин РФ, плательщик налога на профессиональный доход по 422-ФЗ, освобождён от применения ККТ по п. 2.2 ст. 2 54-ФЗ). Электронный чек ФНС формируется и направляется автоматически.</p>
-        <p style="margin-top: 6px;"><strong>Служба поддержки и досудебные претензии:</strong> <a href="mailto:michaeldkorobov@yandex.ru" style="color: var(--action-accent);">michaeldkorobov@yandex.ru</a> | Возврат денежных средств осуществляется в соответствии со ст. 26.1 Закона РФ «О защите прав потребителей» в течение 14 дней с даты платежа по обращению на email поддержки.</p>
-        <p style="margin-top: 6px;">Программное обеспечение является пассивной информационной системой (не радар-детектором/антирадаром по смыслу ст. 13.3 КоАП РФ). Информация о дорожных объектах носит справочно-предупредительный характер и не освобождает водителя от неукоснительного соблюдения ПДД РФ и требований дорожных знаков.</p>
-      </div>
+        <!-- Header -->
+        <header>
+            <div class="nav">
+                <a href="#" class="logo-box">
+                    <span class="logo-badge">PRO</span>
+                    SpeedCam
+                </a>
+                <div class="nav-links">
+                    <a href="#features" class="nav-link">Возможности</a>
+                    <a href="#pricing" class="nav-link">Тарифы</a>
+                    <a href="#purchases" class="nav-link">Оплата и доставка</a>
+                    <a href="terms.html" class="btn-terms-nav">📄 Оферта и пользовательское соглашение</a>
+                </div>
+                <div class="pay-tags-bar">
+                    <span class="pay-tag">СБП</span>
+                    <span class="pay-tag">МИР</span>
+                    <span class="pay-tag">SberPay</span>
+                    <span class="pay-tag">Банковские карты</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">Версия 1.1.0 • Обновление 2026</div>
+            <h1>Умный радар-детектор и дорожная навигация</h1>
+            <p>Предупреждения в реальном времени о стационарных и мобильных камерах фиксации, полосах ОТ, контроле разметки, зонах средней скорости, засадах ДПС, рамках «Платон» и постах АВГК по всей России и СНГ.</p>
+            <div class="hero-cta-group">
+                <a href="#pricing" class="btn-primary">Посмотреть тарифы и цены</a>
+                <a href="terms.html" class="btn-secondary">Оферта и пользовательское соглашение</a>
+            </div>
+            <p style="font-size: 13.5px; color: #64748b; margin: 0 auto;">⚡ 8 дней бесплатного полнофункционального пробного периода сразу после установки</p>
+        </section>
+
+        <!-- Features -->
+        <section class="features" id="features">
+            <div class="feature-card">
+                <span class="feature-icon">📡</span>
+                <h3>Точные базы камер</h3>
+                <p>Ежедневные автоматические обновления базы более чем 60&nbsp;000 дорожных камер, засад, муляжей, контроля разметки и полос общественного транспорта.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🗣️</span>
+                <h3>Голосовые пакеты и TTS</h3>
+                <p>Встроенный синтезатор речи с регулировкой скорости (1.0x, 1.2x, 1.4x) и 5 бесплатных студийных голосовых пакетов дикторов (Елена, Оксана, Дмитрий, Ретро, Alex).</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🚛</span>
+                <h3>Грузовой профиль (Платон и АВГК)</h3>
+                <p>Специализированный режим для коммерческого транспорта: оповещения о рамках взимания платы системы «Платон» и автоматических постах весогабаритного контроля.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🚗</span>
+                <h3>HUD & Car Dashboard</h3>
+                <p>Проекция на лобовое стекло в ночное время (HUD), адаптация под автомагнитолы Android Auto, часы Wear OS и компактный плавающий оверлей поверх карт.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🛡️</span>
+                <h3>100% Оффлайн-работа</h3>
+                <p>Спутниковая навигация GPS/ГЛОНАСС по встроенной локальной базе данных SQLite. Приложение предупреждает о камерах даже при полном отсутствии интернета в глуши.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">👥</span>
+                <h3>Краудсорсинг водителей</h3>
+                <p>Интерактивное подтверждение и опрос меток на дороге: засады ДПС, мобильные треноги и места ДТП, добавленные другими водителями в реальном времени.</p>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing-section" id="pricing">
+            <div class="section-header">
+                <div class="section-badge">Прозрачная монетизация</div>
+                <h2 class="section-title">Цены тарифов и лицензий</h2>
+                <p class="section-subtitle">Честный доступ без скрытых платежей, подписок-ловушек и автоматических рекуррентных списаний</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Plan 1: Free Trial -->
+                <div class="price-card">
+                    <div>
+                        <div class="card-badge green">Бесплатно</div>
+                        <h3>Пробный период</h3>
+                        <p class="price-subtitle">Ознакомление со всеми возможностями</p>
+                        <div class="price-value">0 ₽ <span>/ 8 дней</span></div>
+                        <ul class="price-features">
+                            <li><strong>100% функций</strong> без ограничений</li>
+                            <li>Полная база камер России и СНГ</li>
+                            <li>Все голосовые пакеты дикторов</li>
+                            <li>Фоновый режим и плавающее окно</li>
+                            <li><strong>Без привязки банковской карты</strong></li>
+                            <li>Никаких скрытых условий</li>
+                        </ul>
+                    </div>
+                    <a href="#purchases" class="card-action-btn outline">Активация при установке</a>
+                </div>
+
+                <!-- Plan 2: 1 Year -->
+                <div class="price-card">
+                    <div>
+                        <div class="card-badge blue">12 месяцев</div>
+                        <h3>Подписка на 1 год</h3>
+                        <p class="price-subtitle">Оптимальный доступ для активных водителей</p>
+                        <div class="price-value">590 ₽ <span>/ год (~49 ₽/мес)</span></div>
+                        <ul class="price-features">
+                            <li><strong>365 дней</strong> полного Pro-доступа</li>
+                            <li>Ежедневные обновления базы камер и АЗС</li>
+                            <li>Грузовой профиль (Платон и АВГК)</li>
+                            <li>Голос TTS с выбором темпа и аудиопакеты</li>
+                            <li><strong>Разовый платёж</strong> — автосписаний нет</li>
+                            <li>Официальный электронный чек ФНС</li>
+                        </ul>
+                    </div>
+                    <a href="#purchases" class="card-action-btn outline">Оформить в приложении</a>
+                </div>
+
+                <!-- Plan 3: Lifetime -->
+                <div class="price-card popular">
+                    <div class="card-badge gold">Выгода навсегда</div>
+                    <div>
+                        <h3>Бессрочный доступ</h3>
+                        <p class="price-subtitle">Единоразовый платёж на всю жизнь</p>
+                        <div class="price-value">1 690 ₽ <span>разово</span></div>
+                        <ul class="price-features">
+                            <li><strong>Пожизненная лицензия Pro</strong></li>
+                            <li>Все будущие обновления базы и алгоритмов</li>
+                            <li>Доступ ко всем новым функциям навсегда</li>
+                            <li>Привязка к устройству и <strong>перенос</strong></li>
+                            <li>HUD-проекция на стекло и все пресеты</li>
+                            <li>Приоритетная персональная поддержка</li>
+                        </ul>
+                    </div>
+                    <a href="#purchases" class="card-action-btn primary">Купить навсегда в приложении</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Purchases Description Section -->
+        <section class="purchases-info-section" id="purchases">
+            <div class="section-header">
+                <div class="section-badge">Порядок оплаты и правила</div>
+                <h2 class="section-title">Описание покупок и условий обслуживания</h2>
+                <p class="section-subtitle">Вся информация о порядке совершения платежа, доставке лицензии, безопасности и возврате</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>💳 Способы оплаты</h4>
+                    <p>Оплата производится в защищённой платёжной форме внутри приложения. Поддерживаются:</p>
+                    <p>• <strong>СБП (Система быстрых платежей)</strong> — оплата в 1 клик через приложение вашего мобильного банка без ввода номера карты;<br>
+                    • <strong>Банковские карты МИР, Visa, Mastercard</strong> любых российских банков;<br>
+                    • <strong>SberPay</strong> и интернет-банкинг.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>🚫 Отсутствие скрытых автосписаний</h4>
+                    <p>Все тарифы являются <strong>строго разовыми покупками</strong>. Мы не привязываем вашу банковскую карту и не оформляем рекуррентные списания.</p>
+                    <p>Когда срок действия тарифа на 1 год истекает, с карты ничего не спишется. Вы сами решаете, продлевать доступ или остаться на базовом режиме.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>⚡ Мгновенная доставка лицензии</h4>
+                    <p>Лицензия является цифровым товаром и активируется в приложении <strong>мгновенно и автоматически</strong> в течение 2–5 секунд после подтверждения транзакции банком.</p>
+                    <p>Вам не нужно ждать ручной отправки ключа или вводить сложные промокоды — программа сразу открывает Pro-доступ.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>🧾 Фискализация и чек ФНС (422-ФЗ)</h4>
+                    <p>Лицензиар применяет специальный налоговый режим НПД (самозанятый гражданин РФ). В соответствии с п. 2.2 ст. 2 54-ФЗ и ст. 14 422-ФЗ расчёты проводятся официально.</p>
+                    <p>Официальный электронный фискальный чек ФНС России формируется через сервис «Мой налог» и направляется на email, указанный при покупке.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>🔄 Перенос и восстановление лицензии</h4>
+                    <p>Ваша лицензия защищена уникальным криптографическим идентификатором и привязана к защищённому облаку.</p>
+                    <p>При смене телефона, сбросе настроек или переустановке приложения достаточно нажать кнопку <strong>«Восстановить покупку»</strong> в окне лицензии, указав email или номер заказа.</p>
+                </div>
+
+                <div class="info-card">
+                    <h4>🛡️ Гарантия возврата средств (ст. 26.1 ЗОЗПП)</h4>
+                    <p>В соответствии со статьёй 26.1 Закона РФ «О защите прав потребителей» (дистанционный способ продажи), вы вправе отказаться от покупки в течение <strong>14 дней</strong> с даты платежа.</p>
+                    <p>При возникновении технических неполадок или несовместимости с моделью телефона средства возвращаются в полном объёме по обращению на email поддержки.</p>
+                </div>
+            </div>
+
+            <div class="highlight-notice">
+                <span>💡</span>
+                <div>
+                    <strong>Безопасность транзакций:</strong> Все платёжные операции обрабатываются по международному стандарту безопасности PCI DSS через сертифицированных платёжных партнёров (Платформа «Самозанятые.рф» АО «Банк 131» / ЮKassa). Персональные платёжные данные покупателей не сохраняются на серверах приложения.
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal Box -->
+        <div class="legal-box">
+            <h3>Юридическая информация и реквизиты</h3>
+            <p><strong>Лицензиар (Разработчик):</strong> Коробов Михаил Дмитриевич (Самозанятый гражданин РФ, плательщик налога на профессиональный доход по 422-ФЗ, освобождён от ККТ по п. 2.2 ст. 2 54-ФЗ).</p>
+            <p><strong>Служба клиентской поддержки:</strong> <a href="mailto:michaeldkorobov@yandex.ru" style="color:#60a5fa; text-decoration:none;">michaeldkorobov@yandex.ru</a> (время ответа до 24 часов в рабочие дни).</p>
+            <p><strong>Назначение программы:</strong> Приложение SpeedCam Pro носит исключительно справочно-информационный характер, призвано повышать безопасность дорожного движения и не освобождает водителя от обязанности неукоснительного соблюдения Правил дорожного движения РФ (ПДД РФ) и требований дорожных знаков.</p>
+
+            <div class="legal-links-row">
+                <a href="terms.html" class="btn-offer-main">📄 Оферта и пользовательское соглашение</a>
+                <a href="privacy.html" class="btn-privacy-link">🔒 Политика конфиденциальности (152-ФЗ)</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-nav">
+                <a href="terms.html">Оферта и пользовательское соглашение</a>
+                <a href="privacy.html">Политика конфиденциальности</a>
+                <a href="mailto:michaeldkorobov@yandex.ru">Служба поддержки</a>
+            </div>
+            <p>© 2026 SpeedCam Pro. Все права защищены. Разработано в соответствии с законодательством Российской Федерации.</p>
+        </footer>
     </div>
-  </footer>
-
-  <!-- Script: Tagline Reveal & Interactivity -->
-  <script>
-    // Prepare Tagline Text for Word-by-Word Reveal
-    const taglineEl = document.getElementById('tagline-text');
-    if (taglineEl) {
-      const words = taglineEl.innerText.trim().split(/\s+/);
-      taglineEl.innerHTML = words.map(w => `<span class="tagline-word">${w}</span>`).join(' ');
-    }
-
-    // Scroll Reveal with IntersectionObserver
-    const observerOptions = {
-      root: null,
-      threshold: 0.15
-    };
-
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-    // Throttled Tagline Reveal by Scroll Progress
-    const taglineWords = document.querySelectorAll('.tagline-word');
-    const taglineSection = document.querySelector('.tagline-section');
-
-    function updateTaglineProgress() {
-      if (!taglineSection || !taglineWords.length) return;
-      const rect = taglineSection.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        const progress = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + rect.height * 0.5), 0), 1);
-        const activeCount = Math.floor(progress * taglineWords.length * 1.3);
-
-        taglineWords.forEach((word, idx) => {
-          if (idx <= activeCount) {
-            word.classList.add('active');
-          } else {
-            word.classList.remove('active');
-          }
-        });
-      }
-    }
-
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateTaglineProgress();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
-
-    // FAQ Accordion Toggle
-    document.querySelectorAll('.faq-trigger').forEach(button => {
-      button.addEventListener('click', () => {
-        const item = button.parentElement;
-        const isOpen = item.classList.contains('open');
-
-        document.querySelectorAll('.faq-item').forEach(i => {
-          i.classList.remove('open');
-          i.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
-        });
-
-        if (!isOpen) {
-          item.classList.add('open');
-          button.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-  </script>
 </body>
 </html>
